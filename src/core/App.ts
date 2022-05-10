@@ -18,8 +18,8 @@ export class App {
   }
 
   async start() {
-    this.connectDB()
-    this.registerResources()
+    await this.registerResources()
+    await this.connectDB()
 
     switch (this.type) {
       case AppType.Api:
@@ -35,7 +35,7 @@ export class App {
     }
   }
 
-  private registerResources() {
+  private async registerResources() {
     const tokens = Object.keys(Resources)
 
     tokens.forEach(token => {
@@ -52,7 +52,7 @@ export class App {
       const db = Container.resolve<MongoClient>(MongoClient)
       await db.connect()
 
-      Container.register({ token: MongoClient, resource: db, singleton: true })
+      Container.container.register(MongoClient, { useValue: db })
 
       console.log(`Connected on mongodb`)
     } catch (e) {
