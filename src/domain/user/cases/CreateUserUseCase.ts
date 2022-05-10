@@ -1,4 +1,3 @@
-import { injectable, inject } from 'tsyringe'
 import { BaseUseCase } from '@/core/BaseUseCase'
 import { User } from '@/domain/user/types/User'
 import { Container } from '@/container/Container'
@@ -6,20 +5,21 @@ import { CreateUserRepositoryInterface } from '@/domain/user/types/CreateUserRep
 import { UserDataAdapter } from '@/domain/user/adapters/UserDataAdapter'
 import { HashPasswordHelper } from '@/domain/user/helpers/HashPasswordHelper'
 import { UserCreatedEvent } from '@/domain/user/events/UserCreatedEvent'
+import { CreateUserMongoRepository } from '../infra/CreateUserMongoRepository'
 
-@injectable()
+@Container.injectable()
 export class CreateUserUseCase extends BaseUseCase<Partial<User>, User> {
   constructor(
-    @inject(Container.tokens.CreateUserRepository)
+    @Container.inject(CreateUserMongoRepository)
     private createUserRepository: CreateUserRepositoryInterface,
 
-    @inject(UserDataAdapter)
+    @Container.inject(UserDataAdapter)
     private adapter: UserDataAdapter,
 
-    @inject(HashPasswordHelper)
+    @Container.inject(HashPasswordHelper)
     private hashPassword: HashPasswordHelper,
 
-    @inject(UserCreatedEvent)
+    @Container.inject(UserCreatedEvent)
     private userCreated: UserCreatedEvent,
   ) {
     super()

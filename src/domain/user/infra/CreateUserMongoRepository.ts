@@ -1,13 +1,15 @@
-import { inject, injectable } from 'tsyringe'
+import { Container } from '@/container/Container'
 import { BaseMongoRepository } from '@/core/BaseMongoRepository'
 import { CreateUserRepositoryInterface } from '@/domain/user/types/CreateUserRepositoryInterface'
 import { User } from '@/domain/user/types/User'
 import { UserMongoAdapter } from '@/domain/user/adapters/UserMongoAdapter'
 
-@injectable()
+@Container.injectable()
 export class CreateUserMongoRepository extends BaseMongoRepository<User> implements CreateUserRepositoryInterface {
+  collectionName = 'Users'
+  
   constructor(
-    @inject(UserMongoAdapter)
+    @Container.inject(UserMongoAdapter)
     private adapter: UserMongoAdapter,
   ) {
     super()

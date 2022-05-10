@@ -1,15 +1,14 @@
-import { Config } from '@/config/Config'
+import { Filter, ObjectId, WithId } from 'mongodb'
 import { Container } from '@/container/Container'
-import { Filter, MongoClient, ObjectId, OptionalId, OptionalUnlessRequiredId, WithId } from 'mongodb'
-import { inject } from 'tsyringe'
+import { MongoClient } from '@/database/clients/MongoClient'
 
 export abstract class BaseMongoRepository<Entity> {
   abstract collectionName: string
+  private client: MongoClient
 
-  constructor(
-    @inject(MongoClient)
-    private client: MongoClient
-  ) {}
+  constructor() {
+    this.client = Container.resolve(MongoClient)
+  }
 
   protected collection() {
     return this.collectionQueryBuilder(this.collectionName)
@@ -18,17 +17,17 @@ export abstract class BaseMongoRepository<Entity> {
   protected collectionQueryBuilder(name: string) {
     return this.client
       .db()
-      .collection<Entity>(name)
+      .collection(name)
   }
 
   protected async findOne(id: string): Promise<WithId<Entity> | null> {
     if (!ObjectId.isValid(id)) {
       return null
     }
-    
+
     const filters = [{ _id: new ObjectId(id) }] as Filter<Entity>
 
-    return await this.collection().findOne(filters)
+    return await this.collection().findOne(filters) as WithId<Entity>
   }
 
   protected async insertOne(entity: Entity): Promise<WithId<Entity>> {
@@ -42,33 +41,27 @@ export abstract class BaseMongoRepository<Entity> {
 
     const response = await this.collection().insertOne(data)
 
-    const record = response?.ops?.[0]
-    
-    if (!record) {
-      throw new Error('error_creating_record')
-    }
-
-    return record
+    return { data, _id: response.insertedId } as unknown as WithId<Entity>
   }
 
-  protected async updateOne(id: string, entity: Partial<Entity>): Promise<WithId<Entity>> {
-    const collection = await this.getCollection()
-    
-    const query = {
-      _id: new ObjectId(id),
-    } as FilterQuery<Entity>
+  // protected async updateOne(id: string, entity: Partial<Entity>): Promise<WithId<Entity>> {
+  //   const collection = await this.collection()
 
-    const update = {
-      $set: {
-        ...entity,
-        updatedAt: new Date(),
-      }
-    }
+  //   const query = {
+  //     _id: new ObjectId(id),
+  //   } as FilterQuery<Entity>
 
-    const options: FindOneAndUpdateOption<Entity> = {
-      returnDocument: 'after',
-    }
+  //   const update = {
+  //     $set: {
+  //       ...entity,
+  //       updatedAt: new Date(),
+  //     }
+  //   }
 
-    return collection.findOneAndUpdate(query, update, options) as unknown as WithId<Entity>
-  }
+  //   const options: FindOneAndUpdateOption<Entity> = {
+  //     returnDocument: 'after',
+  //   }
+
+  //   return collection.findOneAndUpdate(query, update, options) as unknown as WithId<Entity>
+  // }
 }

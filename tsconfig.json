@@ -73,6 +73,7 @@
       "@/config/*": ["config/*"],
       "@/container/*": ["container/*"],
       "@/core/*": ["core/*"],
+      "@/database/*": ["database/*"],
       "@/domain/*": ["domain/*"],
       "@/http/*": ["http/*"],
       "@/worker/*": ["worker/*"]

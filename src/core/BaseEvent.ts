@@ -3,14 +3,14 @@ import { Config } from '@/config/Config'
 import { Container } from '@/container/Container'
 
 export abstract class BaseEvent<Message> {
-  abstract topic: string
+  abstract queue: string
   private enabled: boolean
   private client: Kafka
   private consumer: Consumer
   private producer: Producer
 
   constructor() {
-    const config = Container.getContainer().resolve(Config)
+    const config = Container.resolve<Config>(Config)
     const { enabled, brokers, clientId, groupId } = config.kafka
     
     this.client = new Kafka({ brokers, clientId })
@@ -26,7 +26,7 @@ export abstract class BaseEvent<Message> {
 
     await this.producer.connect()
     await this.producer.send({
-      topic: this.topic,
+      topic: this.queue,
       messages: [{ value: JSON.stringify(message) }],
     })
   }
@@ -38,7 +38,7 @@ export abstract class BaseEvent<Message> {
     
     await this.consumer.connect()
     await this.consumer.subscribe({
-      topic: this.topic,
+      topic: this.queue,
       fromBeginning: true,
     })
 

@@ -1,9 +1,18 @@
 import 'dotenv/config'
 import { ConfigInterface } from '@/config/ConfigInterface'
-import { DBDriver } from '@/core/types/DBDriver'
+import { DBDriver } from '@/database/types/DBDriver'
 
 export class Config implements ConfigInterface {
   environment = process.env.ENVIRONMENT || 'development'
+
+  api = {
+    port: 8000,
+    name: 'beauty-api',
+  }
+
+  worker = {
+    name: 'beauty-worker',
+  }
 
   db = {
     driver: DBDriver.Mongo,

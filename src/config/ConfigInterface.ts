@@ -1,7 +1,16 @@
-import { DBDriver } from '@/core/types/DBDriver';
+import { DBDriver } from '@/database/types/DBDriver'
 
 export interface ConfigInterface {
   environment: string;
+
+  api: {
+    port: number,
+    name: string,
+  };
+
+  worker: {
+    name: string,
+  };
 
   db: {
     driver: DBDriver,
