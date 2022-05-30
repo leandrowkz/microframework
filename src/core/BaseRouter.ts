@@ -19,7 +19,6 @@ export abstract class BaseRouter {
     const { path, method, middlewares, handler } = payload
 
     async function dispatch (req: Request, res: Response, next: NextFunction) {
-      console.log(typeof req)
       const result = await handler.handleRequest(req, res, next) as APIResponse<unknown>
       res.status(result.code).send(result)
     }
