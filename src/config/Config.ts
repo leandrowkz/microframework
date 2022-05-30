@@ -6,16 +6,17 @@ export class Config implements ConfigInterface {
   environment = process.env.ENVIRONMENT || 'development'
 
   api = {
-    port: 8000,
-    name: 'beauty-api',
+    port: Number(process.env.API_PORT) || 8000,
+    name: process.env.API_NAME || 'app-api',
   }
 
   worker = {
-    name: 'beauty-worker',
+    name: process.env.WORKER_NAME || 'app-worker',
   }
 
   db = {
-    driver: DBDriver.Mongo,
+    driver: process.env.DATABASE_DRIVER as DBDriver || DBDriver.Default,
+    enabled: process.env.DATABASE_ENABLED === 'true' || false,
 
     mongo: {
       uri: process.env.MONGO_URI || '',

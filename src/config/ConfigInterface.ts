@@ -14,7 +14,8 @@ export interface ConfigInterface {
 
   db: {
     driver: DBDriver,
-    
+    enabled: boolean,
+
     mongo: {
       uri: string,
       database: string,

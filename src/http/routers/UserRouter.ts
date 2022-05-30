@@ -1,12 +1,12 @@
 import { BaseRouter } from '@/core/BaseRouter'
-import { Container } from '@/container/Container'
+import { Inject, Injectable } from '@/container/Injection'
 import { CreateUserController } from '@/http/controllers/CreateUserController'
 import { HTTPMethod } from '@/http/types/HTTPMethod'
 
-@Container.injectable()
+@Injectable()
 export class UserRouter extends BaseRouter {
   constructor(
-    @Container.inject(CreateUserController)
+    @Inject(CreateUserController)
     private createUserController: CreateUserController,
   ) {
     super()

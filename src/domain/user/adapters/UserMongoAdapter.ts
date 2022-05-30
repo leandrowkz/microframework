@@ -5,7 +5,7 @@ import { User } from '@/domain/user/types/User'
 
 @injectable()
 export class UserMongoAdapter extends BaseAdapter<WithId<User>, User> {
-  
+
   transform(mongoUser: WithId<User>): User {
     return {
       id: String(mongoUser._id),
@@ -14,7 +14,7 @@ export class UserMongoAdapter extends BaseAdapter<WithId<User>, User> {
       password: '*************',
       createdAt: mongoUser.createdAt,
       updatedAt: mongoUser.updatedAt,
-      deletedAt: mongoUser.updatedAt,
+      deletedAt: mongoUser.deletedAt,
     }
   }
 }

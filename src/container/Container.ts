@@ -1,18 +1,8 @@
-import { inject, injectable, container as RootContainer } from 'tsyringe'
-import { RegisterPayload } from '@/container/types/RegisterPayload'
+import { container } from 'tsyringe'
+import { TOKENS } from '@/container/Tokens'
+import { CreateUserMongoRepository } from '@/domain/user/infra/CreateUserMongoRepository'
 
-export class Container {
-  static inject = inject
-  static injectable = injectable
-  static container = RootContainer.createChildContainer()
+export const Container = container.createChildContainer()
 
-  static resolve<Resource>(token: any): Resource {
-    return this.container.resolve<Resource>(token)
-  }
+Container.registerSingleton(TOKENS.CreateUserRepository, CreateUserMongoRepository)
 
-  static register(payload: RegisterPayload) {
-    const { token, resource } = payload
-
-    this.container.registerSingleton(token, resource)
-  }
-}

@@ -1,11 +1,11 @@
 import { MongoClient as MongoDBClient } from 'mongodb'
 import { Config } from '@/config/Config'
-import { Container } from '@/container/Container'
+import { Inject, Injectable } from '@/container/Injection'
 
-@Container.injectable()
+@Injectable()
 export class MongoClient extends MongoDBClient {
   constructor(
-    @Container.inject(Config)
+    @Inject(Config)
     config: Config,
   ) {
     super(config.db.mongo.uri)

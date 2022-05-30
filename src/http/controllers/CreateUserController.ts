@@ -1,17 +1,17 @@
 import { Request } from 'express'
-import { Container } from '@/container/Container'
 import { BaseController } from '@/core/BaseController'
+import { Inject, Injectable } from '@/container/Injection'
 import { CreateUserUseCase } from '@/domain/user/cases/CreateUserUseCase'
-import { User } from '@/domain/user/types/User'
 import { UserDataAdapter } from '@/domain/user/adapters/UserDataAdapter'
+import { User } from '@/domain/user/types/User'
 
-@Container.injectable()
+@Injectable()
 export class CreateUserController extends BaseController<User> {
   constructor(
-    @Container.inject(UserDataAdapter)
+    @Inject(UserDataAdapter)
     private adapter: UserDataAdapter,
 
-    @Container.inject(CreateUserUseCase)
+    @Inject(CreateUserUseCase)
     private createUserUseCase: CreateUserUseCase,
   ) {
     super()

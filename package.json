@@ -4,8 +4,8 @@
   "description": "A small framework for microservice applications. It provides a lot of useful features such as events, logger, controllers, use cases, validators and more.",
   "main": "dist/index.js",
   "scripts": {
-    "dev:api": "nodemon src/http/server.ts",
-    "dev:worker": "nodemon src/worker/worker.ts",
+    "dev:api": "nodemon src/http/startServer.ts",
+    "dev:worker": "nodemon src/worker/startWorker.ts",
     "test": "jest"
   },
   "repository": {

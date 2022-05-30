@@ -1,25 +1,25 @@
 import { BaseUseCase } from '@/core/BaseUseCase'
+import { Inject, Injectable } from '@/container/Injection'
+import { TOKENS } from '@/container/Tokens'
 import { User } from '@/domain/user/types/User'
-import { Container } from '@/container/Container'
 import { CreateUserRepositoryInterface } from '@/domain/user/types/CreateUserRepositoryInterface'
 import { UserDataAdapter } from '@/domain/user/adapters/UserDataAdapter'
 import { HashPasswordHelper } from '@/domain/user/helpers/HashPasswordHelper'
 import { UserCreatedEvent } from '@/domain/user/events/UserCreatedEvent'
-import { CreateUserMongoRepository } from '../infra/CreateUserMongoRepository'
 
-@Container.injectable()
+@Injectable()
 export class CreateUserUseCase extends BaseUseCase<Partial<User>, User> {
   constructor(
-    @Container.inject(CreateUserMongoRepository)
+    @Inject(TOKENS.CreateUserRepository)
     private createUserRepository: CreateUserRepositoryInterface,
 
-    @Container.inject(UserDataAdapter)
+    @Inject(UserDataAdapter)
     private adapter: UserDataAdapter,
 
-    @Container.inject(HashPasswordHelper)
+    @Inject(HashPasswordHelper)
     private hashPassword: HashPasswordHelper,
 
-    @Container.inject(UserCreatedEvent)
+    @Inject(UserCreatedEvent)
     private userCreated: UserCreatedEvent,
   ) {
     super()

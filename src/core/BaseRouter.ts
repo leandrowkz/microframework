@@ -5,7 +5,7 @@ import { RouteOptions } from '@/http/types/RouteOptions'
 export abstract class BaseRouter {
   protected router!: Router
 
-  protected abstract setupRoutes(): Promise<void>
+  protected abstract setupRoutes(): Promise<void> | void
 
   constructor() {
     this.router = Router()
@@ -19,6 +19,7 @@ export abstract class BaseRouter {
     const { path, method, middlewares, handler } = payload
 
     async function dispatch (req: Request, res: Response, next: NextFunction) {
+      console.log(typeof req)
       const result = await handler.handleRequest(req, res, next) as APIResponse<unknown>
       res.status(result.code).send(result)
     }

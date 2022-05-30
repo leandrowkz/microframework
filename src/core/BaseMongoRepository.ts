@@ -41,7 +41,7 @@ export abstract class BaseMongoRepository<Entity> {
 
     const response = await this.collection().insertOne(data)
 
-    return { data, _id: response.insertedId } as unknown as WithId<Entity>
+    return { ...data, _id: response.insertedId } as unknown as WithId<Entity>
   }
 
   // protected async updateOne(id: string, entity: Partial<Entity>): Promise<WithId<Entity>> {
